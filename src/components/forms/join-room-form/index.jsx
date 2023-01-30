@@ -14,7 +14,7 @@ function JoinRoom() {
                 <input type="text" name="join_room_form_room_id" id="join_room_form_room_id" placeholder='Enter Room ID' className="form-control" />
             </div>
             <div className="col-12 mb-4">
-                <input type="submit" className="btn btn-success" value="JOIN ROOM." />
+            <button className="btn btn-success" >JOIN ROOM</button>
             </div>
         </div>
     </>

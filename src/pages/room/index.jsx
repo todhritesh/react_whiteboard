@@ -9,6 +9,33 @@ function Room() {
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
   const [element , setElement] = useState([])
+  const [history , setHistory] = useState([])
+
+  function handleClearCanvas (){
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    ctx.fillRect = 'white'
+    ctxRef.current.clearRect(
+      0,0,canvasRef.current.width,canvasRef.current.height
+    )
+    setElement([])
+    setHistory([])
+  }
+
+  function handleUndo(){
+    setHistory(prev=>{
+      return [
+        ...prev,
+        element[element.length-1]
+      ]
+    })
+    setElement(prev=>prev.slice(0,prev.length-1))
+  }
+
+  function handleRedo(){
+    setElement(prev=>([...prev , history[history.length-1]]))
+    setHistory(prev=>([prev.slice(0,prev.length-1)]))
+  }
 
   return (
     <div className="container">
@@ -40,15 +67,15 @@ function Room() {
 
             <div className="d-flex">
               <div className="d-flex gap-2">
-                <button className="btn btn-warning btn-sm">Undo</button>
-                <button className="btn btn-success btn-sm">Redo</button>
+                <button disabled={element.length===0} onClick={handleUndo} className="btn btn-warning btn-sm">Undo</button>
+                <button disabled={history.length<1} onClick={handleRedo} className="btn btn-success btn-sm">Redo</button>
               </div>
             </div>
           </div>
 
           <div className="d-flex juftify-self-end">
             <div className="d-flex gap-2">
-              <button className="btn btn-danger ing btn-sm">Clear</button>
+              <button onClick={handleClearCanvas} className="btn btn-danger ing btn-sm">Clear</button>
             </div>
           </div>
 
@@ -56,8 +83,8 @@ function Room() {
       </div>
 
       <div className="row">
-        <div className="col-12 p-4 canval-container">
-          <Whiteboard canvasRef={canvasRef} ctxRef={ctxRef} element={element} setElement={setElement} />
+        <div className="col-12 p-4 canvas-container">
+          <Whiteboard color={color} tool={tool} canvasRef={canvasRef} ctxRef={ctxRef} element={element} setElement={setElement} />
         </div>
       </div>
     </div>

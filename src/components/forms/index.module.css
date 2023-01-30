@@ -1,3 +1,5 @@
 .form_container {
     max-width: 500px;
+    padding:20px;
+    border: 2px solid black;
 }
